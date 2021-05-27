@@ -1,0 +1,34 @@
+#!/bin/bash
+
+. $(dirname $(realpath $0))/disp
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit 1
+
+BADTERMS="git ll nano ssh dd var_dump die"
+
+for BADTERM in $BADTERMS
+do
+	LINE=$(git diff | grep -P '^\+\s' | grep -P -i "(^|[^a-z])$BADTERM([^a-z]|$)")
+
+   if [[ ! -z $LINE ]]
+   then
+     echo -n "$(disp 33)WARNING! POTENTIALLY BAD TERM FOUND. DID YOU MEAN TO COMMIT THIS LINE?: £$(disp)" >&2
+     echo >&2
+     echo $LINE | grep --color=auto $BADTERM
+     read discard
+   fi
+done
+
+echo -n "confirm: $(disp 33)git add . && git commit && git push -u origin $BRANCH$(disp) "
+read discard
+
+git add .
+
+if [[ -n "$*" ]]
+then
+	git commit -m "$*"
+else
+	git commit
+fi
+
+git push -u origin $BRANCH

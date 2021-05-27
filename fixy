@@ -1,0 +1,19 @@
+#!/bin/bash
+
+. $(dirname $(realpath $0))/disp
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit 1
+
+if [[ "$BRANCH" == "main" ]]
+then
+  gitty $* || (pully && pushy) \
+    && pully                   \
+    && checky develop          \
+    && pully                   \
+    && rebasey main            \
+    && (pushy || forcey)       \
+    && checky main
+else
+  echo "$(disp 31)error: must be executed on the main branch$(disp)" >&2
+  exit 2
+fi

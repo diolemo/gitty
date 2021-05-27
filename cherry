@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. $(dirname $(realpath $0))/disp
+
+if [[ -z "$1" ]]
+then
+   echo "$(disp 33)usage: cherry <HASH>$(disp)"
+	exit 1
+fi
+
+git cherry-pick $*

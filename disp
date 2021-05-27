@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# reset     = 0
+# bright    = 1
+# dim       = 2
+# underline = 3
+# blink     = 4
+# reverse   = 7
+# hidden    = 8
+
+# black     = 30
+# red       = 31
+# green     = 32
+# yellow    = 33
+# blue      = 34
+# magenta   = 35
+# cyan      = 36
+# white     = 37
+
+function disp()
+{
+    if [ $# -eq 3 ];   then    echo -e "\e[$1;$2;$3m"
+    elif [ $# -eq 2 ]; then    echo -e "\e[$1;$2m"
+    elif [ $# -eq 1 ]; then    echo -e "\e[$1m"
+    else                       echo -e "\e[0;m";
+    fi
+}
+
+if [[ $# -gt 0 ]]
+then
+    disp $*
+fi
