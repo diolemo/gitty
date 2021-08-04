@@ -26,7 +26,3 @@ function disp()
     fi
 }
 
-if [[ $# -gt 0 ]]
-then
-    disp $*
-fi
