@@ -1,0 +1,23 @@
+# Please source this file in your .bashrc or similar.
+# It will enable auto-complete for various gitty commands (WIP).
+
+function checkyComplete() {
+   shopt -s nullglob
+   COMPREPLY=()
+   GREP_PATTERN="."
+
+   if [[ ! -z "${COMP_WORDS[@]:1}" ]]
+   then 
+    # WARNING: no attempt made to escape 
+    # special characters so it may fail 
+    # in some edge cases if special chars used
+    GREP_PATTERN="^${COMP_WORDS[@]:1}"
+   fi
+
+   POSSIBLE=("$(git branch -a --format '%(refname:short)' | grep "$GREP_PATTERN")")
+   COMPREPLY=(${POSSIBLE[@]})
+   shopt -u nullglob
+   return 0
+}
+
+complete -o bashdefault -o default -F checkyComplete checky
