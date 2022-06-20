@@ -4,7 +4,7 @@
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit 1
 
-echo -n "confirm: $(disp 33)git push -u origin --force $BRANCH$(disp) "
+echo -n "confirm: $(disp 33)git push -u origin --force-with-lease $BRANCH$(disp) "
 read discard
 
-git push -u origin --force $BRANCH
+git push -u origin --force-with-lease $BRANCH
