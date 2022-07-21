@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+. $(dirname $(realpath $0))/disp
+
+target=main
+source=develop
+
+if [[ ! -z "$1" ]]
+then
+	target=$1
+fi
+
+if [[ ! -z "$2" ]]
+then
+	source=$2
+fi
+
+echo -n "confirm: $(disp 33)git checkout $target && git pull$(disp) "
+read discard
+git checkout $target && git pull
+
+echo -n "confirm: $(disp 33)git checkout $source && git pull$(disp) "
+read discard
+git checkout $source && git pull
+
+hasMissingCommits=0
+
+while read commit
+do
+	commitMissing=0
+	targetCommitMessage=$(git show -s --format=%f $commit)
+	git show -s --format=%f $source ^$target | grep -Fx $targetCommitMessage >/dev/null || commitMissing=1
+	if [[ $commitMissing -ne 0 ]]
+	then
+		hasMissingCommits=1
+		echo
+		echo "$(disp 31)Danger! Commit was not found in source branch."
+		echo "hash: $commit"
+		echo "message: $(git show -s --format=%s $commit)$(disp)"
+		echo "--------------------------"
+	fi
+done < <(git rev-list $target ^$source)
+
+if [[ $hasMissingCommits -eq 1 ]]
+then
+	echo
+	echo -n "$(disp 33)Continue?$(disp) "
+	read discard
+	echo
+fi
+
+echo -n "confirm: $(disp 33)git branch --force $target $source$(disp) "
+read discard
+
+git branch --force $target $source
+
+echo -n "confirm: $(disp 33)git push -u origin --force-with-lease $target$(disp) "
+read discard
+
+git push -u origin --force-with-lease $target
