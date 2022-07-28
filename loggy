@@ -1,0 +1,10 @@
+#!/bin/bash
+
+between=$1
+
+if [[ -z "$diff" ]]
+then
+	between=main..develop
+fi
+
+git log --oneline --graph --decorate --abbrev-commit "$between"
