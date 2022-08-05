@@ -51,7 +51,7 @@ then
 	echo
 fi
 
-echo "confirm: $(disp 33)git checkout $target && git checkout -b $target--backup && git checkout $source$(disp)"
+echo -n "confirm: $(disp 33)git checkout $target && git checkout -b $target--backup && git checkout $source$(disp)"
 read discard
 
 git checkout $target && git checkout -b $target--backup && git checkout $source
