@@ -1,7 +1,7 @@
 # Please source this file in your .bashrc or similar.
 # It will enable auto-complete for various gitty commands (WIP).
 
-function checkyComplete() {
+function branchComplete() {
    shopt -s nullglob
    COMPREPLY=()
    GREP_PATTERN="."
@@ -20,4 +20,5 @@ function checkyComplete() {
    return 0
 }
 
-complete -o bashdefault -o default -F checkyComplete checky
+complete -o bashdefault -o default -F branchComplete checky
+complete -o bashdefault -o default -F branchComplete rebasey
