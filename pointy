@@ -23,7 +23,8 @@ git checkout $target && git pull
 
 echo -n "confirm: $(disp 33)git branch -D $target--backup; git checkout -b $target--backup$(disp)"
 read discard
-git branch -D $target--backup; git checkout -b $target--backup
+git branch -D $target--backup || true
+git checkout -b $target--backup
 
 echo -n "confirm: $(disp 33)git checkout $source && git pull$(disp) "
 read discard
