@@ -4,18 +4,14 @@ set -e
 
 . $(dirname $(realpath $0))/disp
 
-target=main
-source=develop
-
-if [[ ! -z "$1" ]]
+if [[ -z "$1" ]] || [[ -z "$2" ]]
 then
-	target=$1
+    echo "usage: $(disp 33)pointy <target> <source>$(disp)"
+    exit 1
 fi
 
-if [[ ! -z "$2" ]]
-then
-	source=$2
-fi
+target=$1
+source=$2
 
 echo -n "confirm: $(disp 33)git checkout $target && git pull$(disp) "
 read discard
