@@ -4,21 +4,6 @@
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit 1
 
-BADTERMS="git ll nano ssh dd var_dump die"
-
-for BADTERM in $BADTERMS
-do
-	LINE=$(git diff | grep -P '^\+\s' | grep -P -i "(^|[^a-z])$BADTERM([^a-z]|$)")
-
-   if [[ ! -z $LINE ]]
-   then
-     echo -n "$(disp 33)WARNING! POTENTIALLY BAD TERM FOUND. DID YOU MEAN TO COMMIT THIS LINE?: £$(disp)" >&2
-     echo >&2
-     echo $LINE | grep --color=auto $BADTERM
-     read discard
-   fi
-done
-
 echo -n "confirm: $(disp 33)git add . && git commit && git push -u origin $BRANCH$(disp) "
 read discard
 
@@ -34,7 +19,7 @@ fi
 git push -u origin $BRANCH
 
 # Extract the origin URI and convert it to a HTTPS URL
-REMOTE_URL=$(git remote -v | grep -P '^origin.+push\)$' | awk '{ print $2 }')
+REMOTE_URL=$(git remote -v | grep -E '^origin.+push\)$' | awk '{ print $2 }')
 REMOTE_URL=$(echo $REMOTE_URL | sed -r 's/^git@([^:]+):(.+)\.git$/https:\/\/\1\/\2/')
 
 if [[ "$REMOTE_URL" = *github.com* ]]
