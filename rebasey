@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $(dirname $(realpath $0))/disp
+. $(dirname $(realpath $0))/lib/disp
 
 git rev-parse --abbrev-ref HEAD >/dev/null || exit 1
 

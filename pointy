@@ -2,7 +2,7 @@
 
 set -e
 
-. $(dirname $(realpath $0))/disp
+. $(dirname $(realpath $0))/lib/disp
 
 if [[ -z "$1" ]] || [[ -z "$2" ]]
 then

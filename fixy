@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $(dirname $(realpath $0))/disp
+. $(dirname $(realpath $0))/lib/disp
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit 1
 

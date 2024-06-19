@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $(dirname $(realpath $0))/disp
+. $(dirname $(realpath $0))/lib/disp
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit 1
 
@@ -8,3 +8,5 @@ echo -n "confirm: $(disp 33)git push -u origin --force-with-lease $BRANCH$(disp)
 read discard
 
 git push -u origin --force-with-lease $BRANCH
+
+$(dirname $(realpath $0))/lib/github-links $BRANCH

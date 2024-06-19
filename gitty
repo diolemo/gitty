@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $(dirname $(realpath $0))/disp
+. $(dirname $(realpath $0))/lib/disp
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit 1
 
@@ -18,12 +18,4 @@ fi
 
 git push -u origin $BRANCH
 
-# Extract the origin URI and convert it to a HTTPS URL
-REMOTE_URL=$(git remote -v | grep -E '^origin.+push\)$' | awk '{ print $2 }')
-REMOTE_URL=$(echo $REMOTE_URL | sed -r 's/^git@([^:]+):(.+)\.git$/https:\/\/\1\/\2/')
-
-if [[ "$REMOTE_URL" = *github.com* ]]
-then 
-  echo "$(disp 36)$REMOTE_URL/commit/$(git rev-parse HEAD)$(disp)"
-  echo "$(disp 36)$REMOTE_URL/compare/$BRANCH?expand=1$(disp)"
-fi
+$(dirname $(realpath $0))/lib/github-links $BRANCH
