@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $(realpath $(dirname $0))/disp
+
 # Extract the origin URI and convert it to a HTTPS URL
 REMOTE_URL=$(git remote -v | grep -E '^origin.+push\)$' | awk '{ print $2 }')
 REMOTE_URL=$(echo $REMOTE_URL | sed -r 's/^git@([^:]+):(.+)\.git$/https:\/\/\1\/\2/')
