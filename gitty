@@ -4,6 +4,8 @@
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit 1
 
+git status
+
 echo -n "confirm: $(disp 33)git add . && git commit && git push -u origin $BRANCH$(disp) "
 read discard
 
@@ -11,7 +13,14 @@ git add .
 
 if [[ -n "$*" ]]
 then
-	git commit -m "$*"
+   if [[ -x .git/hooks/gitty-commit-msg-transform ]]
+   then
+      MESSAGE=$(.git/hooks/gitty-commit-msg-transform "$BRANCH" "$*")
+   else
+      MESSAGE="$*"
+   fi
+
+	git commit -m "$MESSAGE"
 else
 	git commit
 fi
